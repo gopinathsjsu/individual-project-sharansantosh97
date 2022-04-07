@@ -1,7 +1,6 @@
 package com.billing;
 
-
-
+import com.database.StaticDatabase;
 
 public class Billing
 {
@@ -9,7 +8,8 @@ public class Billing
     public static void main(String args[])
     {
     	
-    	System.out.println("test sample");
+    	StaticDatabase db = StaticDatabase.getInstance();
+    	db.loadDatabase();
     }
     
     
