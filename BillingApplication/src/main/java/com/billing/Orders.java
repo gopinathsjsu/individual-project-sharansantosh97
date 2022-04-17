@@ -42,6 +42,36 @@ public class Orders {
         return true;
     }
 	
+	public boolean verifyOrderDetails(){
+        quantityLimit();
+        categoryLimit();
+        return outputMessage.isEmpty();
+    }
+    public void getTotalPrice(){
+        itemList.forEach((item)->{
+            totalAmount+= item.getItemQuantity()* item.getPrice();
+        });
+        currentInvoice.setTotalPrice(totalAmount);
+    }
+
+
+
+    public void checkoutOrder(){
+        database.getOrders().add(currentInvoice);
+        for(BillingItem currentItem:itemList){
+            Item item=database.getItems().get(currentItem.getInvoiceItemName());
+            item.setQuantityInInventory(item.getQuantityInInventory()-currentItem.getItemQuantity());
+
+        }
+        for(String creditCard:creditCards){
+            if(!database.getCreditCards().contains(creditCard)){
+                database.getCreditCards().add(creditCard);
+            }
+        }
+        
+        
+    }
+    
     public void getItems(ArrayList<String> fileContent){
     	String firstLine = fileContent.get(0);
         String[] firstItem = firstLine.split(",");
@@ -76,7 +106,60 @@ public class Orders {
 
 
 
+    public boolean quantityLimit(){
+        StringBuilder message=new StringBuilder();
+        for(BillingItem currentItem:itemList){
+            Item item=database.getItems().get(currentItem.getInvoiceItemName());
+            if(item.getQuantityInInventory()<currentItem.getItemQuantity()){
+                if(message.length()>0)
+                    message.append("\n");
+                message.append(currentItem.getInvoiceItemName()+" is not present in sufficient quantity in Database");
+            }
+            else{
+                currentItem.setPrice(item.getItemPrice());
+                if(!creditCards.contains(currentItem.getCreditCardInfo()))
+                    creditCards.add(currentItem.getCreditCardInfo());
+            }
+        }
+        if(message.length()>0){
+            outputMessage.add("Incorrect item quantities.");
+            outputMessage.add(message.toString());
+        }
 
+        return (message.length()==0);
+
+
+
+    }
+    
+    public boolean categoryLimit()
+    {
+        final int luxuryCat = 4;
+        final int essentialCat = 3;
+        final int miscCat = 6;
+        HashMap<String,Integer> map = new HashMap<String,Integer>();
+        StaticDatabase database = StaticDatabase.getInstance();
+        for(BillingItem orderItem:itemList){
+            map.put(database.getItems().get(orderItem.getInvoiceItemName()).getCategory(),map.getOrDefault(database.getItems().get(orderItem.getInvoiceItemName()).getCategory(),0)+orderItem.getItemQuantity());
+        }
+
+        if(map.getOrDefault("Luxury",0)>luxuryCat){
+            outputMessage.add("Only 4 Luxury items can be included in one order");
+            return false;
+        }
+
+        else if(map.getOrDefault("Essentials",0)>essentialCat){
+            outputMessage.add("Only 3 Essential items can be included in one order");
+            return false;
+        }
+
+        else if(map.getOrDefault("Misc",0)>miscCat){
+            outputMessage.add("Only 6 Misc items can be included in one order");
+            return false;
+        }
+
+        return true;
+    }
 
 
 

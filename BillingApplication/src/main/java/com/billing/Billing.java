@@ -26,7 +26,20 @@ public class Billing
         Orders o=new Orders(fPath);
         if(o.startOrder()==true)
         {
-            
+        	System.out.println("Processing your order");
+            if(o.verifyOrderDetails()==true) 
+            {
+                System.out.println("All Products are available in stock and under each category limit");
+                o.getTotalPrice();
+                o.checkoutOrder();
+                System.out.println("Success! Order has been placed.");
+                System.out.println("Please refer to successFile under Output folder of the project structure for more details");
+
+            }
+            else
+            {
+                    
+            }
         }
         else
         {
