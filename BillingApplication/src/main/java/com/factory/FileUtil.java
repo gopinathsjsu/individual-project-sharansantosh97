@@ -39,5 +39,12 @@ public class FileUtil {
         return fileContent;
     }
 
-    
+    public void writer(ArrayList<String> message, boolean checkIfError, ArrayList<BillingItem> itemList) throws IOException 
+    {
+    	FileFactory fileFactory = new FileFactory();
+    	FileInterface fileInterface = fileFactory.getFileWriter(checkIfError);
+    	fileInterface.setContent(message);
+    	fileInterface.FileWriter(filePath, itemList);
+
+    }
 }

@@ -42,7 +42,8 @@ public class Orders {
         return true;
     }
 	
-	public boolean verifyOrderDetails(){
+	
+    public boolean verifyOrderDetails(){
         quantityLimit();
         categoryLimit();
         return outputMessage.isEmpty();
@@ -69,9 +70,9 @@ public class Orders {
             }
         }
         
-        
+        showOutput();
     }
-    
+
     public void getItems(ArrayList<String> fileContent){
     	String firstLine = fileContent.get(0);
         String[] firstItem = firstLine.split(",");
@@ -103,9 +104,9 @@ public class Orders {
         
         
     }
-
-
-
+    
+    
+    
     public boolean quantityLimit(){
         StringBuilder message=new StringBuilder();
         for(BillingItem currentItem:itemList){
@@ -159,6 +160,28 @@ public class Orders {
         }
 
         return true;
+    }
+
+    public void showOutput()
+    {
+        if(outputMessage.isEmpty()){
+            outputMessage.add("Successful");
+            outputMessage.add(Double.toString(currentInvoice.getTotalPrice()));
+            try{
+            	
+                file.writer(outputMessage,false, itemList);
+            }catch(Exception e){
+               e.printStackTrace();
+            }
+
+
+        }else{
+            try{
+                file.writer(outputMessage,true, itemList);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
 
