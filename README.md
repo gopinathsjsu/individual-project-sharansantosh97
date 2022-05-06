@@ -9,11 +9,10 @@ Steps to run the Application :
 6) Provide the input CSV file path when it prompts 
 7) Finally, the result will be generated in the Output folder of the project structure 
 
-
 # Introduction : 
 
 This is a Billing Application that takes a CSV file as an Input. The input CSV contains the list of items to be ordered, quantity of each items along with the credit card to be used for payment.
-Upon receiving the correct input CSV file path the application checks if the required items are available in sufficient quantity in the Static in-memory database and also checks for any items exceeding the category limit set. 
+Upon receiving the correct input CSV file path the application checks if the required items are available in sufficient quantity in the Static in-memory database(using hashmap, hashset, arraylist) sand also checks for any items exceeding the category limit set. 
 Upon successful validation the order is processed and the database is being updated. Also, an invoice CSV file will be generated with the list of Items and Total price to be paid. 
 Upon validation error a text file will be generated with the cause of the error. 
 
