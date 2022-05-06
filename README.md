@@ -4,7 +4,7 @@ Steps to run the Application :
 1) Maven and JDK 18.0.1 must be pre installed on the local system before running the application 
 2) Clone the repository to your local system or download as a zip file
 3) Go to the project root folder i.e Billing Application on terminal
-4) Run the command "mvm compile" to compile the application
+4) Run the command "mvn compile" to compile the application
 5) Run the command "mvn exec:java -Dexec.mainClass=com.billing.Billing" to run the application 
 6) Provide the input CSV file path when it prompts 
 7) Finally, the result will be generated in the Output folder of the project structure 
